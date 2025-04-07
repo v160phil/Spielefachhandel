@@ -31,8 +31,8 @@ public class Rechnung {
         return this.meinKunde;
     }
 
-    public void setRechnungsdatum(Date rechnungsdatum){
-        this.rechnungsdatum = rechnungsdatum;
+    public void setRechnungsdatum(Date datum){
+        this.rechnungsdatum = datum;
     }
 
 }
