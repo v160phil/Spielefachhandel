@@ -4,14 +4,13 @@ import java.util.ArrayList;
 public class Rechnung {
     
     private int rechnungsNr;
-    private static int autoNr = 0;
     private Kunde meinKunde;
     private Date rechnungsdatum;
     private ArrayList<Position> diePositionen;
 
-    public Rechnung(Kunde derKunde){
+    public Rechnung(Date rechnungsdatum, Kunde derKunde){
+        this.rechnungsdatum = rechnungsdatum;
         this.meinKunde = derKunde;
-        this.rechnungsNr = ++autoNr;
         this.diePositionen = new ArrayList<>();
     }
 
@@ -31,8 +30,8 @@ public class Rechnung {
         return this.meinKunde;
     }
 
-    public void setRechnungsdatum(Date datum){
-        this.rechnungsdatum = datum;
+    public void setRechnungsNr(int rechnungsNr){
+        this.rechnungsNr = rechnungsNr;
     }
 
 }
