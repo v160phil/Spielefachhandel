@@ -1,10 +1,10 @@
 import javax.swing.*;
-import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Date;
 
 public class SpielefachhandelGUI {
 
@@ -20,17 +20,22 @@ public class SpielefachhandelGUI {
 
             // Elemente definieren
             JFrame frame;
-            JLabel lbl_aktionauswahl, lbl_begruessungsText, lbl_tabelle_auswahl, lbl_eingabe;
+            JLabel lbl_aktionauswahl, lbl_begruessungsText, lbl_tabelle_auswahl, lbl_eingabe,
+            lbl_vorname, lbl_name, lbl_Plz, lbl_Strasse, lbl_Ort, lbl_Email, lbl_Telefon,
+            lbl_datum, lbl_kunde, lbl_genre, lbl_preis, lbl_anzahl, lbl_rechnung, lbl_spiel;
             JButton btn_start, btn_daten_ausgeben, btn_daten_suchen, btn_daten_einfuegen, btn_kunde, btn_rechnung,
-                    btn_position, btn_spiel, btn_zurueck, btn_kundenSuchen, btn_rechnungSuchen, btn_positionSuchen, btn_spielSuchen;
+                    btn_position, btn_spiel, btn_zurueck, btn_kundenSuchen, btn_rechnungSuchen, btn_positionSuchen, btn_spielSuchen,
+                    btn_kundenSpeichern, btn_rechnungSpeichern, btn_spielSpeichern, btn_positionSpeichern;
             JScrollPane tableScrollPane;
-            JTextField kundennummerFeld, rechnungsnummerFeld, idFeld, produktnummerFeld;
+            JTextField kundennummerFeld, rechnungsnummerFeld, idFeld, produktnummerFeld,
+            kundeVornameFeld, kundeNameFeld, kundePlzFeld, kundeStrasseFeld, kundeOrtFeld,
+            kundeEmailFeld, kundeTelefonFeld, datumFeld, spielNameFeld, preisFeld, genreFeld, anzahlFeld;
 
             // GUI erstellen und Elemente hinzufuegen
             frame = new JFrame("Verwaltung des Spielefachhandels");
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+            frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
             lbl_begruessungsText = new JLabel("Willkommen bei der Administration des Spielefachhandels!");
             frame.add(lbl_begruessungsText);
             lbl_aktionauswahl = new JLabel("Was möchten Sie tun?");
@@ -95,6 +100,96 @@ public class SpielefachhandelGUI {
             btn_spielSuchen = new JButton("Spiel suchen");
             btn_spielSuchen.setVisible(false);
             frame.add(btn_spielSuchen);
+            kundeVornameFeld = new JTextField(10);
+            kundeVornameFeld.setVisible(false);
+            frame.add(kundeVornameFeld);
+            kundeNameFeld = new JTextField(10);
+            kundeNameFeld.setVisible(false);
+            frame.add(kundeNameFeld);
+            kundePlzFeld = new JTextField(10);
+            kundePlzFeld.setVisible(false);
+            frame.add(kundePlzFeld);
+            kundeStrasseFeld = new JTextField(10);
+            kundeStrasseFeld.setVisible(false);
+            frame.add(kundeStrasseFeld);
+            kundeOrtFeld = new JTextField(10);
+            kundeOrtFeld.setVisible(false);
+            frame.add(kundeOrtFeld);
+            kundeEmailFeld = new JTextField(10);
+            kundeEmailFeld.setVisible(false);
+            frame.add(kundeEmailFeld);
+            kundeTelefonFeld = new JTextField(10);
+            kundeTelefonFeld.setVisible(false);
+            frame.add(kundeTelefonFeld);
+            btn_kundenSpeichern = new JButton("Kunden speichern");
+            btn_kundenSpeichern.setVisible(false);
+            frame.add(btn_kundenSpeichern);
+            lbl_vorname = new JLabel("Vorname:");
+            lbl_vorname.setVisible(false);
+            frame.add(lbl_vorname);
+            lbl_name = new JLabel("Name:");
+            lbl_name.setVisible(false);
+            frame.add(lbl_name);
+            lbl_Plz = new JLabel("PLZ:");
+            lbl_Plz.setVisible(false);
+            frame.add(lbl_Plz);
+            lbl_Strasse = new JLabel("Straße:");
+            lbl_Strasse.setVisible(false);
+            frame.add(lbl_Strasse);
+            lbl_Ort = new JLabel("Ort:");
+            lbl_Ort.setVisible(false);
+            frame.add(lbl_Ort);
+            lbl_Email = new JLabel("E-Mail:");
+            lbl_Email.setVisible(false);
+            frame.add(lbl_Email);
+            lbl_Telefon = new JLabel("Telefon:");
+            lbl_Telefon.setVisible(false);
+            frame.add(lbl_Telefon);
+            lbl_datum = new JLabel("Datum (im Format JJJJ-MM-TT)");
+            lbl_datum.setVisible(false);
+            frame.add(lbl_datum);
+            lbl_kunde = new JLabel("Die zugehörige Kundennummer:");
+            lbl_kunde.setVisible(false);
+            frame.add(lbl_kunde);
+            datumFeld = new JTextField(10);
+            datumFeld.setVisible(false);
+            frame.add(datumFeld);
+            btn_rechnungSpeichern = new JButton("Rechnung speichern");
+            btn_rechnungSpeichern.setVisible(false);
+            frame.add(btn_rechnungSpeichern);
+            btn_spielSpeichern = new JButton("Spiel speichern");
+            btn_spielSpeichern.setVisible(false);
+            frame.add(btn_spielSpeichern);
+            lbl_genre = new JLabel("Genre:");
+            lbl_genre.setVisible(false);
+            frame.add(lbl_genre);
+            lbl_preis = new JLabel("Preis:");
+            lbl_preis.setVisible(false);
+            frame.add(lbl_preis);
+            spielNameFeld = new JTextField(10);
+            spielNameFeld.setVisible(false);
+            frame.add(spielNameFeld);
+            preisFeld = new JTextField(10);
+            preisFeld.setVisible(false);
+            frame.add(preisFeld);
+            genreFeld = new JTextField(10);
+            genreFeld.setVisible(false);
+            frame.add(genreFeld);
+            lbl_spiel = new JLabel("Die zugehörige Produktnummer:");
+            lbl_spiel.setVisible(false);
+            frame.add(lbl_spiel);
+            lbl_rechnung = new JLabel("Die zugehörige Rechnungsnummer:");
+            lbl_rechnung.setVisible(false);
+            frame.add(lbl_rechnung);
+            btn_positionSpeichern = new JButton("Position speichern");
+            btn_positionSpeichern.setVisible(false);
+            frame.add(btn_positionSpeichern);
+            lbl_anzahl = new JLabel("Anzahl:");
+            lbl_anzahl.setVisible(false);
+            frame.add(lbl_anzahl);
+            anzahlFeld = new JTextField(10);
+            anzahlFeld.setVisible(false);
+            frame.add(anzahlFeld);
 
             // Aktionen durchfuehren
             btn_start.addActionListener(new ActionListener() {
@@ -168,6 +263,12 @@ public class SpielefachhandelGUI {
                             setVisibilityOfComponents(true, lbl_eingabe, kundennummerFeld, btn_kundenSuchen);
                             break;
 
+                        case DATENEINTRAG:
+                            setVisibilityOfComponents(false, lbl_tabelle_auswahl, btn_kunde, btn_rechnung, btn_position, btn_spiel, tableScrollPane);
+                            setVisibilityOfComponents(true, lbl_vorname, kundeVornameFeld, lbl_name, kundeNameFeld, lbl_Plz, kundePlzFeld, lbl_Strasse, 
+                            kundeStrasseFeld, lbl_Ort, kundeOrtFeld, lbl_Email, kundeEmailFeld, lbl_Telefon, kundeTelefonFeld, btn_kundenSpeichern);
+                            break;
+
                         default:
                             break;
 
@@ -205,6 +306,13 @@ public class SpielefachhandelGUI {
                             setVisibilityOfComponents(true, lbl_eingabe, produktnummerFeld, btn_spielSuchen);
                             break;
 
+                        case DATENEINTRAG:
+                            lbl_datum.setText("Veröffentlichungsdatum (im Format JJJJ-MM-TT)");
+                            datumFeld.setText("");
+                            setVisibilityOfComponents(false, lbl_tabelle_auswahl, btn_kunde, btn_rechnung, btn_position, btn_spiel, tableScrollPane);
+                            setVisibilityOfComponents(true, lbl_name, spielNameFeld, lbl_genre, genreFeld, lbl_preis, preisFeld, lbl_datum, datumFeld, btn_spielSpeichern);
+                            break;
+
                         default:
                             break;
                     }
@@ -240,6 +348,14 @@ public class SpielefachhandelGUI {
                             setVisibilityOfComponents(true, lbl_eingabe, rechnungsnummerFeld, btn_rechnungSuchen);
                             break;
 
+                        case DATENEINTRAG:
+                            lbl_datum.setText("Rechnungsdatum (im Format JJJJ-MM-TT)");
+                            datumFeld.setText("");
+                            kundennummerFeld.setText("");
+                            setVisibilityOfComponents(false, lbl_tabelle_auswahl, btn_kunde, btn_rechnung, btn_position, btn_spiel, tableScrollPane);
+                            setVisibilityOfComponents(true, lbl_datum, datumFeld, lbl_kunde, kundennummerFeld, btn_rechnungSpeichern);
+                            break;
+
                         default:
                             break;
                     }
@@ -259,7 +375,7 @@ public class SpielefachhandelGUI {
 
                         case DATENANZEIGE:
                             for (Position p : sfh1.getAllePositionen()) {
-                                model.addRow(new Object[] { p.getAutoID(), p.getAnzahl(), p.getMeineRechnung().getRechnungsNr(),
+                                model.addRow(new Object[] { p.getID(), p.getAnzahl(), p.getMeineRechnung().getRechnungsNr(),
                                         p.getMeinSpiel().getProduktNr() });
                             }
                             tableScrollPane.setVisible(true);
@@ -273,6 +389,13 @@ public class SpielefachhandelGUI {
                             lbl_eingabe.setText("Geben Sie eine ID ein:");
                             setVisibilityOfComponents(false, lbl_tabelle_auswahl, btn_kunde, btn_rechnung, btn_position, btn_spiel, tableScrollPane);
                             setVisibilityOfComponents(true, lbl_eingabe, idFeld, btn_positionSuchen);
+                            break;
+
+                        case DATENEINTRAG:
+                            rechnungsnummerFeld.setText("");
+                            produktnummerFeld.setText("");
+                            setVisibilityOfComponents(false, lbl_tabelle_auswahl, btn_kunde, btn_rechnung, btn_position, btn_spiel, tableScrollPane);
+                            setVisibilityOfComponents(true, lbl_anzahl, anzahlFeld, lbl_rechnung, rechnungsnummerFeld, lbl_spiel, produktnummerFeld, btn_positionSpeichern);
                             break;
 
                         default:
@@ -358,7 +481,7 @@ public class SpielefachhandelGUI {
                             tableScrollPane.setViewportView(table);
             
                             model.addRow(new Object[] {
-                                p.getAutoID(), p.getAnzahl(), p.getMeineRechnung().getRechnungsNr(), p.getMeinSpiel().getProduktNr()
+                                p.getID(), p.getAnzahl(), p.getMeineRechnung().getRechnungsNr(), p.getMeinSpiel().getProduktNr()
                             });
             
                             setVisibilityOfComponents(true, tableScrollPane);
@@ -403,6 +526,114 @@ public class SpielefachhandelGUI {
             
                     frame.revalidate();
                     frame.repaint();
+                }
+            });
+
+            btn_kundenSpeichern.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e){
+
+                    try {
+
+                        String vorname = kundeVornameFeld.getText();
+                        String name = kundeNameFeld.getText();
+                        String plz = kundePlzFeld.getText();
+                        String strasse = kundeStrasseFeld.getText();
+                        String ort = kundeOrtFeld.getText();
+                        String email = kundeEmailFeld.getText();
+                        String telefon = kundeTelefonFeld.getText();
+                        Kunde neuerKunde = sfh1.addKunde(plz, ort, strasse, email, telefon, name, vorname);
+
+                        DatabaseManager.insertKunde(neuerKunde);
+                        JOptionPane.showMessageDialog(frame, "Kunde erfolgreich hinzugefügt!");
+
+                        kundeVornameFeld.setText("");
+                        kundeNameFeld.setText("");
+                        kundePlzFeld.setText("");
+                        kundeStrasseFeld.setText("");
+                        kundeOrtFeld.setText("");
+                        kundeEmailFeld.setText("");
+                        kundeTelefonFeld.setText("");
+
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(frame, "Fehler beim Einfügen des Kunden.");
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            btn_rechnungSpeichern.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e){
+
+                    try {
+
+                        Date datum = Date.valueOf(datumFeld.getText());
+                        int kundenNr = Integer.parseInt(kundennummerFeld.getText());
+                        Rechnung neueRechnung = sfh1.erstelleRechnung(datum, sfh1.sucheKunde(kundenNr));
+
+                        DatabaseManager.insertRechnung(neueRechnung);
+                        JOptionPane.showMessageDialog(frame, "Rechnung erfolgreich hinzugefügt!");
+
+                        datumFeld.setText("");
+                        kundennummerFeld.setText("");
+
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(frame, "Fehler beim Einfügen der Rechnung.");
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            btn_spielSpeichern.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e){
+
+                    try {
+
+                        String name = spielNameFeld.getText();
+                        String genre = genreFeld.getText();
+                        double einzelpreis = Double.parseDouble(preisFeld.getText());
+                        Date veroeffentlichungsdatum = Date.valueOf(datumFeld.getText());
+                        Spiel neuesSpiel = sfh1.addSpiel(name, genre, veroeffentlichungsdatum, einzelpreis);
+
+                        DatabaseManager.insertSpiel(neuesSpiel);
+                        JOptionPane.showMessageDialog(frame, "Spiel erfolgreich hinzugefügt!");
+
+                        spielNameFeld.setText("");
+                        genreFeld.setText("");
+                        preisFeld.setText("");
+                        datumFeld.setText("");
+
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(frame, "Fehler beim Einfügen des Spiels.");
+                        ex.printStackTrace();
+                    }
+                }
+            });
+
+            btn_positionSpeichern.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e){
+
+                    try {
+
+                        int anzahl = Integer.parseInt(anzahlFeld.getText());
+                        int rechnungsNr = Integer.parseInt(rechnungsnummerFeld.getText());
+                        int produktNr = Integer.parseInt(produktnummerFeld.getText());
+                        Position neuePosition = sfh1.erstellePosition(anzahl, sfh1.sucheSpiel(produktNr), sfh1.sucheRechnung(rechnungsNr));
+
+                        DatabaseManager.insertPosition(neuePosition);
+                        JOptionPane.showMessageDialog(frame, "Position erfolgreich hinzugefügt!");
+
+                        anzahlFeld.setText("");
+                        rechnungsnummerFeld.setText("");
+                        produktnummerFeld.setText("");
+
+                    } catch (Exception ex){
+                        JOptionPane.showMessageDialog(frame, "Fehler beim Einfügen der Position.");
+                        ex.printStackTrace();
+                    }
                 }
             });
 
