@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.sql.Date;
 
 public class Spielefachhandel {
     
@@ -24,20 +25,28 @@ public class Spielefachhandel {
         return this.name;
     }
 
-    public void addKunde(String name, String vorname){
-        this.alleKunden.add(new Kunde(name, vorname));
+    public Kunde addKunde(String plz, String ort, String strasse, String email, String telefonnummer, String name, String vorname){
+        Kunde k = new Kunde(plz, ort, strasse, email, telefonnummer, name, vorname);
+        this.alleKunden.add(k);
+        return k;
     }
 
-    public void addSpiel(String name){
-        this.alleSpiele.add(new Spiel(name));
+    public Spiel addSpiel(String name, String genre, Date veroeffentlichungsdatum, double einzelpreis){
+        Spiel s = new Spiel(name, genre, veroeffentlichungsdatum, einzelpreis);
+        this.alleSpiele.add(s);
+        return s;
     }
 
-    public void erstelleRechnung(Kunde derKunde){
-        this.alleRechnungen.add(new Rechnung(derKunde));
+    public Rechnung erstelleRechnung(Date rechnungsdatum, Kunde derKunde){
+        Rechnung r = new Rechnung(rechnungsdatum, derKunde);
+        this.alleRechnungen.add(r);
+        return r;
     }
 
-    public void erstellePosition(Spiel s, Rechnung r){
-        this.allePositionen.add(new Position(s, r));
+    public Position erstellePosition(int anzahl, Spiel s, Rechnung r){
+        Position p = new Position(anzahl, s, r);
+        this.allePositionen.add(p);
+        return p;
     }
 
     public ArrayList<Kunde> getAlleKunden(){
@@ -76,7 +85,7 @@ public class Spielefachhandel {
 
     public Position suchePosition(int id){
         for (Position p : allePositionen) {
-            if (p.getAutoID() == id) {
+            if (p.getID() == id) {
                 return p;
             }
         }
