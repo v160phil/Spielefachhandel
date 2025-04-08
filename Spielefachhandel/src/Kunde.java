@@ -10,14 +10,17 @@ public class Kunde {
     private String strasse;
     private String email;
     private String telefonnummer;
-    private static int zaehler = 0;
     private ArrayList<Rechnung> meineRechnungen;
 
-    public Kunde(String name, String vorname){
+    public Kunde(String plz, String ort, String strasse, String email, String telefonnummer, String name, String vorname){
+        this.plz = plz;
+        this.ort = ort;
+        this.strasse = strasse;
+        this.email = email;
+        this.telefonnummer = telefonnummer;
         this.name = name;
         this.vorname = vorname;
         this.meineRechnungen = new ArrayList<>();
-        this.kundenNr = ++zaehler;
     }
 
     public String getVorname(){
@@ -78,6 +81,10 @@ public class Kunde {
 
     public void setTelefonnummer(String telefonnummer){
         this.telefonnummer = telefonnummer;
+    }
+
+    public void setKundenNr(int kundenNr){
+        this.kundenNr = kundenNr;
     }
 
 }
