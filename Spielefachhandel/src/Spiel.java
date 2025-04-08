@@ -7,11 +7,12 @@ public class Spiel {
     private int produktNr;
     private Date veroeffentlichungsdatum;
     private double einzelpreis;
-    private static int counter = 0;
 
-    public Spiel(String name){
+    public Spiel(String name, String genre, Date veroeffentlichungsdatum, double einzelpreis){
+        this.genre = genre;
         this.name = name;
-        this.produktNr = ++counter;
+        this.veroeffentlichungsdatum = veroeffentlichungsdatum;
+        this.einzelpreis = einzelpreis;
     }
 
     public String getName(){
@@ -48,6 +49,10 @@ public class Spiel {
 
     public void setEinzelpreis(double einzelpreis){
         this.einzelpreis = einzelpreis;
+    }
+
+    public void setProduktNr(int produktNr){
+        this.produktNr = produktNr;
     }
 
 }
