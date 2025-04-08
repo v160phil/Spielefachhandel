@@ -33,6 +33,7 @@ public class DatabaseManager {
             ResultSet rs = stmt.executeQuery(sql)){
 
             while (rs.next()) {
+                int kundenNr = rs.getInt("kundenNr");
                 String vorname = rs.getString("vorname");
                 String name = rs.getString("name");
                 String plz = rs.getString("plz");
@@ -40,12 +41,8 @@ public class DatabaseManager {
                 String ort = rs.getString("ort");
                 String email = rs.getString("email");
                 String telefonnummer = rs.getString("telefonnummer");
-                Kunde kunde = new Kunde(name, vorname);
-                kunde.setEmail(email);
-                kunde.setOrt(ort);
-                kunde.setPlz(plz);
-                kunde.setStrasse(strasse);
-                kunde.setTelefonnummer(telefonnummer);
+                Kunde kunde = new Kunde(plz, ort, strasse, email, telefonnummer, name, vorname);
+                kunde.setKundenNr(kundenNr);
                 kundenListe.add(kunde);
 
             }
@@ -62,14 +59,13 @@ public class DatabaseManager {
             ResultSet rs = stmt.executeQuery(sql)){
 
             while (rs.next()) {
+                int produktNr = rs.getInt("produktNr");
                 String name = rs.getString("name");
                 String genre = rs.getString("genre");
                 double einzelpreis = rs.getDouble("einzelpreis");
                 Date veroeffentlichungsdatum = rs.getDate("veroeffentlichungsdatum");
-                Spiel spiel = new Spiel(name);
-                spiel.setEinzelpreis(einzelpreis);
-                spiel.setGenre(genre);
-                spiel.setVeroeffentlichungsdatum(veroeffentlichungsdatum);
+                Spiel spiel = new Spiel(name, genre, veroeffentlichungsdatum, einzelpreis);
+                spiel.setProduktNr(produktNr);
                 spieleListe.add(spiel);
 
             }
@@ -86,12 +82,13 @@ public class DatabaseManager {
             ResultSet rs = stmt.executeQuery(sql)){
 
             while (rs.next()) {
+                int rechnungsNr = rs.getInt("rechnungsNr");
                 Date rechnungsdatum = rs.getDate("rechnungsdatum");
                 int kundenNr = rs.getInt("kundenNr");
                 for (Kunde k : alleKunden){
                     if (k.getKundenNr() == kundenNr) {
-                        Rechnung rechnung = new Rechnung(k);
-                        rechnung.setRechnungsdatum(rechnungsdatum);
+                        Rechnung rechnung = new Rechnung(rechnungsdatum, k);
+                        rechnung.setRechnungsNr(rechnungsNr);
                         rechnungsListe.add(rechnung);
                     }
                 }
@@ -110,6 +107,7 @@ public class DatabaseManager {
             ResultSet rs = stmt.executeQuery(sql)){
 
             while (rs.next()) {
+                int ID = rs.getInt("autoID");
                 int anzahl = rs.getInt("anzahl");
                 int rechnungsNr = rs.getInt("rechnungsNr");
                 int produktNr = rs.getInt("produktNr");
@@ -119,8 +117,8 @@ public class DatabaseManager {
                         for (Spiel s : alleSpiele) {
                             if (s.getProduktNr() == produktNr) {
                                 Spiel tempSpiel = s;
-                                Position position = new Position(tempSpiel, tempRechnung);
-                                position.setAnzahl(anzahl);
+                                Position position = new Position(anzahl, tempSpiel, tempRechnung);
+                                position.setID(ID);
                                 positionsListe.add(position);
                             }
                         }
@@ -131,6 +129,86 @@ public class DatabaseManager {
             e.printStackTrace();
         }
         return positionsListe;
+    }
+
+    public static int insertKunde(Kunde k){
+        String sql = "INSERT INTO kunde (vorname, name, plz, strasse, ort, email, telefonnummer) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setString(1, k.getVorname());
+            pstmt.setString(2, k.getName());
+            pstmt.setString(3, k.getPlz());
+            pstmt.setString(4, k.getStrasse());
+            pstmt.setString(5, k.getOrt());
+            pstmt.setString(6, k.getEmail());
+            pstmt.setString(7, k.getTelefonnummer());
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()){
+                int kundenNr = rs.getInt(1);
+                k.setKundenNr(kundenNr);
+                return kundenNr;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertSpiel(Spiel s){
+        String sql = "INSERT INTO spiel (name, genre, einzelpreis, veroeffentlichungsdatum) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setString(1, s.getName());
+            pstmt.setString(2, s.getGenre());
+            pstmt.setDouble(3, s.getEinzelpreis());
+            pstmt.setDate(4, s.getVeroeffentlichungsdatum());
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()){
+                int produktNr = rs.getInt(1);
+                s.setProduktNr(produktNr);
+                return produktNr;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertRechnung(Rechnung r){
+        String sql = "INSERT INTO rechnung (rechnungsdatum, kundenNr) VALUES (?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setDate(1, r.getRechnungsdatum());
+            pstmt.setInt(2, r.getMeinKunde().getKundenNr());
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()){
+                int rechnungsNr = rs.getInt(1);
+                r.setRechnungsNr(rechnungsNr);
+                return rechnungsNr;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int insertPosition(Position p){
+        String sql = "INSERT INTO position (anzahl, rechnungsNr, produktNr) VALUES (?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            pstmt.setInt(1, p.getAnzahl());
+            pstmt.setInt(2, p.getMeineRechnung().getRechnungsNr());
+            pstmt.setInt(3, p.getMeinSpiel().getProduktNr());
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()){
+                int autoID = rs.getInt(1);
+                p.setID(autoID);
+                return autoID;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     // Schließt die Verbindung
