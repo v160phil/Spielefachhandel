@@ -6,10 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import spielefachhandel.Aktualisierbar;
 import spielefachhandel.Rechnung;
 import spielefachhandel.Spielefachhandel;
 
-public class RechnungAusgabe extends JPanel{
+public class RechnungAusgabe extends JPanel implements Aktualisierbar{
 
     Spielefachhandel sfh;
 
@@ -32,12 +33,15 @@ public class RechnungAusgabe extends JPanel{
         tableScrollPane.setViewportView(table);
 
         this.add(tableScrollPane);
-        rechnungenAusgeben();
+        aktualisieren();
 
     }
 
-    public void rechnungenAusgeben(){
+    @Override
+    public void aktualisieren(){
 
+        model.setRowCount(0);
+        
         for (Rechnung r : sfh.getAlleRechnungen()) {
             model.addRow(new Object[] { r.getRechnungsNr(), r.getRechnungsdatum(), r.getMeinKunde().getKundenNr() });
         }
