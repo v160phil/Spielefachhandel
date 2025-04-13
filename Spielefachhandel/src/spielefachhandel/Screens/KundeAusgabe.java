@@ -4,12 +4,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import spielefachhandel.Aktualisierbar;
 import spielefachhandel.Kunde;
 import spielefachhandel.Spielefachhandel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
-public class KundeAusgabe extends JPanel {
+public class KundeAusgabe extends JPanel implements Aktualisierbar{
     
     Spielefachhandel sfh;
 
@@ -33,11 +34,14 @@ public class KundeAusgabe extends JPanel {
         tableScrollPane.setViewportView(table);
 
         this.add(tableScrollPane);
-        kundenAusgeben();
+        aktualisieren();
     }
 
-    public void kundenAusgeben(){
+    @Override
+    public void aktualisieren(){
 
+        model.setRowCount(0);
+        
         for (Kunde k : sfh.getAlleKunden()) {
             model.addRow(new Object[] { k.getKundenNr(), k.getVorname(), k.getName(), k.getPlz(),
                     k.getStrasse(), k.getOrt(), k.getEmail(), k.getTelefonnummer() });
