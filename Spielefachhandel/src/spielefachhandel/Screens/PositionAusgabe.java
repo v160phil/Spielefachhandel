@@ -6,10 +6,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import spielefachhandel.Aktualisierbar;
 import spielefachhandel.Position;
 import spielefachhandel.Spielefachhandel;
 
-public class PositionAusgabe extends JPanel{
+public class PositionAusgabe extends JPanel implements Aktualisierbar{
     
     Spielefachhandel sfh;
 
@@ -32,12 +33,15 @@ public class PositionAusgabe extends JPanel{
         tableScrollPane.setViewportView(table);
 
         this.add(tableScrollPane);
-        positionenAusgeben();
+        aktualisieren();
 
     }
 
-    public void positionenAusgeben(){
-
+    @Override
+    public void aktualisieren(){
+        
+        model.setRowCount(0);
+        
         for (Position p : sfh.getAllePositionen()) {
             model.addRow(new Object[] { p.getID(), p.getAnzahl(), p.getMeineRechnung().getRechnungsNr(), p.getMeinSpiel().getProduktNr() });
         }
