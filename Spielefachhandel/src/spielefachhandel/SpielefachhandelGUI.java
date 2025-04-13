@@ -41,9 +41,17 @@ public class SpielefachhandelGUI {
     private static HashMap<Screen, JPanel> screens; 
 
     public static void goToScreen(Screen new_screen) {
+
         mainPanel.remove(screens.get(currentScreen));
         currentScreen = new_screen;
-        mainPanel.add(screens.get(new_screen), BorderLayout.CENTER);
+
+        JPanel neuesPanel = screens.get(new_screen);
+
+        if (neuesPanel instanceof Aktualisierbar){
+            ((Aktualisierbar) neuesPanel).aktualisieren();
+        }
+
+        mainPanel.add(neuesPanel, BorderLayout.CENTER);
 
         btn_zurueck.setVisible(new_screen != Screen.STARTBILDSCHIRM && new_screen != Screen.HAUPTMENUE);
         mainPanel.revalidate();
